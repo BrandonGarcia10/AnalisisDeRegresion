@@ -1,0 +1,15 @@
+##Crear 3 variables de 4 entradas
+#facultad <- c("economía" , "ingenieria" , arquitectura" , "derecho")
+#licenciatura <- c("actuaria" , "ingenieria civil" , "arquitectura" , "derecho")
+calificacion <- c(6 , 4 , 10 , 8)
+etiq <- c("Actuaria" , "Ingenieria", "Arquitectura" , "Derecho")
+class(facultad)
+class(licenciatura)
+class(calificacion)
+
+basenueva <- data.frame(calificacion)
+
+pie(calificacion , etiq)
+pie(calificacion, etiq, main = "Gráfica 1 de 
+    las calificaciones" , sub = "Fuente: UAEM" , col = c("black", "white", "grey", "brown"), radius = 1.0 , 
+    clockwise = TRUE , lty = 12)
