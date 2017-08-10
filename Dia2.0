@@ -1,0 +1,101 @@
+
+### generar 3 secuencias que generen los sig. datos:
+# 1.- 1000 datos que se generen de 3 en 3 y pedir a 
+# R el dato 300 del vector generado
+# 2.- 450 datos que su secuencia sea de 50 en 50 datos,
+# pedir a R el dato 10
+# 3.- 2000 datos que su secuencia sea de .3 en .3,
+#en este caso pedir a R los datos 2, 15, 800 y 1999
+
+a <- seq(1, 3000, 3)
+a[300]
+
+
+b <- seq(1, 22500, 50)
+b[10]
+
+
+c <- seq(.3, 600 ,.3 )
+c[c(2, 15, 800, 1999)]
+
+# Ejercicio de datos aleatorias
+# 1.- suponemos una empresa que quiere estimar una pension n para
+# sus trabajadores con base en la antigüedad, por lo que se requiere
+# estimar una muestra de 500 trabajadores y que sus rangos
+# de antigüedad sean sean desde 0 hasta 30 años, pedir a R el
+# ultimo dato de esta muestra.
+# 2.- generar una muestra de 50000 datos que tengan un rango
+# de 0 hasta 100000
+# 3.- Generar una muestra de 50 datos que tengan un rango 
+# de 10 a 19, pedir los datos 34, 43 y 49.
+
+aa <- sample(0:30 , 500 , replace = TRUE)
+aa[500]
+
+
+bb <- sample(0:100000 , 50000)
+bb <- data.frame(sample(0:100000 , 50000))
+View(bb)
+
+
+antiguedad <- sample(10:19 , 50, replace = TRUE)
+antiguedad[c(34 , 43, 49)]
+
+
+# Matrices
+e <- 1:10
+View(e)
+#Para convertirla en Matriz se usa dim
+dim(e) <- c(2 , 5) # Matriz de 2 renglones y 5 columnas
+View(e)
+class(e)
+dim(e) <- c(5 , 2) # Matriz de 5 renglones y 2 columnas
+View(e)
+
+ ### para mandar llamar especificamente un dato de la matriz
+e[5,2] #Aqui mando a llamar el dato del renglon 5 y columna 2
+e[3,2] #Aqui mando a llamar el dato del renglon 3 y columna 2
+
+# Si queremos conocer los valores de una columna
+e[ , 2] #Solo los valores de la columna 2
+e[ , 1] #Solo los valores de la columna 1
+
+###Para solo valores de renglones
+e[2, ] #solo valores del renglon 2
+e[4, ] #solo valores del renglon 4
+
+### COMO CREAR MATRICES 
+##Con la funcion matrix
+f <- matrix(110:119, nrow = 5, ncol = 2, byrow = TRUE)
+View(f)
+f
+g <- matrix(1:10, nrow = 5, ncol = 2)  
+g
+
+# Tambien se le pueden asignar nombres a renglones y a las 
+# columnas de las matrices
+rownames(f) <- c("manzanas" , "naranja" , "piña" , "melon" , "mango")
+colnames(f) <- c("Mercado 1" , "Mercado 2")
+View(f)
+
+
+### Si tenemos una matriz grande y queremos preguntarle a R
+## el nombre de las columnas o renglones
+colnames(f)
+rownames(f)
+
+## Para saber los datos de una columna
+f["manzanas" , "Mercado 2"]
+View(f)
+
+
+h <- matrix(2:21, nrow = 4 , ncol = 5)
+h
+
+#Otra forma de generar matrices en R
+i <- rbind(1:2, 4:3, c(5,6), c(2,7), c(8,9))
+i
+
+#En cada argumento se define un renglon
+j <- cbind(5:3, c(4,5,6), 9:7, c(1,5,7), 3:5)
+j
