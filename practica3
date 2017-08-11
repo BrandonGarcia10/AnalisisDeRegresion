@@ -1,0 +1,76 @@
+#para pegar un renglon a la matriz z
+ 
+z <- rbind(z , c(4,5,6,7)) #rbind agrega un nuevo renglon a la matriz
+z
+rownames(z) <- c("escuela1","escuela2","escuela3","escuela4","escuela5","escuela6")
+z
+
+#para pegar una columna a la matriz z
+z <- cbind(z, c(14,25,36,47,99,81))
+z
+colnames(z) <- c("toluca" , "pachuca" , "gdl" , "mty", "jocotitlan")
+z
+
+####Cómo editar una matriz
+z["escuela1","jocotitlan"] <- 28
+z
+ 
+edit(z)
+z
+
+##para multiplicar matrices se usa %*%
+##para la transpuesta de una matriz se utiliza t()
+
+
+#############DATA FRAME
+nombres <- c("sergio","juan", "rocio","jessica")
+edad <- c(30,43,21,18)
+altura <- c(170,165,175,172)
+salario <- c(3000,4500,2200,4300)
+basem <- data.frame(nombres,edad,altura,salario)
+#Para ver la basem
+View(basem)
+
+basem[4,3] <- 178 ##Asigno el valor 178 a la posicion 4,3
+
+#Para multiplicar una parte de la base
+basem$salario * 2.2 -> basem$salario #multiplico salario por 2.2
+
+peso <- c(83.2,75.2,69.3,70.5)
+basem <- data.frame(nombres,edad,altura,salario,peso)
+basem
+
+basem$peso <- basem$peso*1.2
+basem
+
+#Para redondear las variables
+round(basem$peso , 2) -> basem$peso # Lo redondea
+basem
+
+basem$escol <- c("prepa","lic","ninguno", "prim")
+basem
+
+basem$sexo <- c(1,1,2,2)
+basem
+
+##Tabla de frecuencias con sexo
+table(basem$sexo)
+
+attach(basem)
+table(sexo)
+detach(basem)
+
+###Instalar paqueterias desde internet
+install.packages("foreign")
+## sirve para exportar o importar bases de datos
+install.packages("questionr")
+#sirve para expandir frecuencias de bases de datos muestrales
+install.packages("car")
+#sirve para regresion
+
+##Dentro de cada paquete vienen multiples funciones que solo las podemos usar
+#cuando mandamos llamar al paquete
+##Para mandar llamar una paqueteria instalada, library() y require()
+# son funciones equivalentes
+
+install.packages(c("foreign","questionr","car"))
