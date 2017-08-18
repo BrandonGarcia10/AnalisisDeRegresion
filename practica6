@@ -1,0 +1,48 @@
+##Bajar base de datos
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/modulos/mti/2015/microdatos/mti2015_bases_conapo_dbf.zip" , temporal)
+files = unzip(temporal, list = TRUE)$Name
+unzip(temporal, files = [grepl("dbf" , files)])
+library(foreign)
+files
+mti15 <- data.frame(read.dbf("C:/Users/SALA-D5/Desktop/mti2015_05_17_sdem_precodificado.DBF"))
+class(mti15$ENT)
+mti15$ENT <- as.numeric(mti15$ENT)
+class(mti15$ENT)
+
+
+## 3.- ETIQUETAR
+table(mti15$CS_P15)
+
+## 3.1.- ETIQUETAR CATEGORÍAS EN OTRA VARIABLE
+mti15$CS_P15 <- factor(mti15$CS_P15, levels = c(1,2,3,4), labels = c("Primaria", "Secundaria","Preparatoria","No sabe"))
+table(mti15$CS_P15)
+mti15$RAMA1 <- factor(mti15$RAMA, levels = c(1,2,3,4,5,6,7), labels =  c("Agropecuario","Construcción","Industria manufacturera","Servicios","comercio", "Otros", "No especificado"))
+
+table(mti15$RAMA1)
+mti15$RAMA <- as.numeric(mti15$RAMA)
+class(mti15$RAMA)
+mti15$RAMA2[mti15$RAMA == 1]<- 1
+mti15$RAMA2[mti15$RAMA == 2 | mti15$RAMA == 3]<- 2
+mti15$RAMA2[mti15$RAMA == 4 | mti15$RAMA == 5]<- 3
+mti15$RAMA2[mti15$RAMA == 6 | mti15$RAMA == 7]<- 4
+table(mti15$RAMA2)
+table(mti15$EDA)
+
+#Ejercicio: recodificar la variable EDA en una nueva variable que se llame gpoeda y etiquetarla.
+#Esta recodificacion debe quedar en 4 lineas del scrip
+#La recodificacion es la sig: 5,6,7 <- 1: niño ,, 8,9,10,11 <- 2 preado ,, 12,13,14<- 3 ado ,, 15,16,17<-4 joven
+class(mti15$EDA)
+mti15$gpoeda[mti15$EDA == "05" | mti15$EDA == "06" | mti15$EDA == "07" ] <- 1
+mti15$gpoeda[mti15$EDA == "08" | mti15$EDA == "09" | mti15$EDA == "10" | mti15$EDA == "11" ] <- 2
+mti15$gpoeda[mti15$EDA == "12" | mti15$EDA == "13" | mti15$EDA == "14" ] <- 3
+mti15$gpoeda[mti15$EDA == "15" | mti15$EDA == "16" | mti15$EDA == "17" ] <- 4
+table(mti15$gpoeda)
+mti15$gpoeda <- factor(mti15$gpoeda, levels = c(1,2,3,4), labels = c("Niño","Preado","Ado","Joven"))
+table(mti15$gpoeda)
+install.packages("questionr")
+
+require(questionr)
+t <- wtd.table(mti15$gpoeda, weights = mti15$FAC_MTI)
+write.csv( file = "Practica1.csv")
+#serobles99@gmail.com
