@@ -1,0 +1,15 @@
+install.packages("foreign")
+install.packages("ggplot2")
+install.packages("psych")
+
+library(foreign)
+library(ggplot2)
+library(psych)
+apertura <- c(.40,.42,.48,.51,.57,.60,.70,.75,.75,.78)
+osa <- c(1.02,1.21,.88,.98,1.52,1.83,1.50,1.80,1.74,1.63)
+base1 <- data.frame(apertura,osa) 
+names(base1)
+(base1)
+base1
+plot(base1[,2], base1[,3], main="Diagrama de Dispersión")
+abline(lm(base1[,3]~base1[,2]), col="yellow")
