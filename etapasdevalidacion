@@ -1,0 +1,59 @@
+##Estaturas 1.2,1.23,1.19,1.32,1.28,1.22,1.17,1.29,1.33,1.15
+##Nivel economico 110,130,108,167,156,115,104,138,170,107
+##QUEREMOS COMPROBAR LA HIPOTESIS QUE ENTRE MAYOR INGRESO DE LA FAMILIA
+#HAY UNA MAYOR ESTATURA EN LOS NIÑOS
+esta <- c(1.2,1.23,1.19,1.32,1.28,1.22,1.17,1.29,1.33,1.15)
+eco <- c(110,130,108,167,156,115,104,138,170,107)
+mod1 <- lm(esta~eco)
+####BONDAD DE AJUSTE
+#Con la bondad de ajuste verificamos la calidad del modelo al interpretar la variable dependiente
+#Para eso se utiliza la tabla anova
+anova(mod1)
+#En este caso la variabilidad del modelo explicada es 0.033022=SSM
+##revisando los valores del summary el estadístico F es mayopr a 1 y p-value <.05 con estas revisiones
+#se puede mencionar que se rechaza la hipóyesis nula de F=1 y se puede establecer un modelo
+#Revisar R2 múltiple
+#Alrededor del 91% de la variabilidad de la estatura es explicada por la recta ajustada
+summary(mod1)$coefficients
+#esta = .9323 + .0023 eco
+#######################################ANÁLISIS DE COEFICIENTES#############
+#B0 es .93 y B1 es .0023 , si la variable ingreso incrementa en un peso,
+#la estatura del niño aumenta .0023
+
+base1 <- data.frame(eco,esta)
+base1$fitted.mod1 <- fitted(mod1) ##Valores ajustados
+base1$residuals.mod1 <- residuals(mod1) ###Residuos del modelo
+base1$rstudent.mod1 <- rstudent(mod1) ##Residuos estudentizados
+
+##Estas variables se utilizan para comprobar los supuestos ...
+##Supesto de normalidad... es que los residuos tengan una distribucion normal
+#Analizar los residuos
+shapiro.test(base1$rstudent.mod1)
+## prueba de hipotesis shapiro test
+### Ho: La muestra tiene una distribucion normal
+### Ha: la muestra no tiene una distribucion normal
+##Como p-value es mayor a .05 la hipotesis se acepta o no se rechaza y los residuos tienen 
+# una distribución normal
+
+##Ahora veremos este resultado en un gráfico
+x11()
+qqnorm(base1$rstudent.mod1 , main = "Normal (0,1)") ##Se obtiene la gráfica de
+qqline(base1$rstudent.mod1)
+
+###Ahora vamos a revisar la homogeneidad de varianzas
+### Pla homogeneidad se requiere de una libreria que se llama lmtest, debido a que esta se
+### tiene que aplicar la prueba de Breush-Pagan t
+install.packages("lmtest")
+require (lmtest)
+bptest(mod1)
+##En esta prueba esperamos que haya homogeneidad de las varianzas
+## Para eso tenemos que tener un p-value mayor a .05, por lo que para mod1 se puede decir
+## que no hay homogeneidad en la varianza
+
+
+###Prueba de autocorrelacion o independencia
+#en este caso se utiliza la prueba Durbin Watson...
+#para esta prueba se utiliza
+dwtest(mod1, alternative = "two.sided")
+#En este caso al igual que los demas se acepta hipótesis nula debido a que tenemos un
+#p-value mayor a .05... esto quiere decir que no hay autocorrelacion en los residuos
