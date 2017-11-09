@@ -1,0 +1,41 @@
+##SWISS
+##Medición estandarizada de la fecundidad e indicadores socioeconomicos 
+#por cada una de las 47 provincias francesas hablantes alrededor de 1988
+require(stats)
+base <- data.frame(swiss)
+##Analisis exploratorio
+names(base)
+pairs(base) ##Gráfica por variables
+cor(base)
+##Propuesta de regresión simple con base en el analisis exploratorio
+regresion1 <- lm(Infant.Mortality ~ Fertility , data = base)
+##Modelo propuesto anteriormente
+nulo <- lm(Fertility ~1, data = base) #Modelo con una variable dependiente y una constante
+summary(nulo)
+completo <- lm(Fertility ~ . , data = base) #El punto permite resumir todas las variables
+step(nulo , scope = list(lower=nulo , upper=completo), direction = "forward")
+#Se pone nulo primero por ser el modelo más simple
+#Con scope se incluyen todas las combinaciones posibles de la var dep con las independientes
+summary(completo)
+help(step)
+
+library(help = "datasets")
+require(datasets)
+basenueva <- data.frame(volcano)
+
+names(basenueva)
+pairs(basenueva) ##Gráfica por variables
+cor(basenueva)
+
+##Modelo propuesto anteriormente
+nulonuevo <- lm(X1 ~1, data = basenueva) #Modelo con una variable dependiente y una constante
+summary(nulonuevo)
+completanueva <- lm(X1 ~ . , data = basenueva) #El punto permite resumir todas las variables
+step(nulonuevo , scope = list(lower=nulonuevo , upper=completanueva), direction = "forward")
+##Segun la función Step, el mejor modelo es: lm(formula = X1 ~ X2 + X5 + X16 + X6 + 
+#X7 + X61 + X42 + X59 + X17 + X4, data = basenueva)
+modnuevo <- lm(formula = X1 ~ X2 + X5 + X16 + X6 + X7 + X61 + X42 + X59 + X17 + X4, data = basenueva)
+summary(modnuevo)
+##Gracias a sumary del modelo óptimo sabemos que: R^2 ajustada=0.9949 (casi perfecta)
+#Que el error estándar=0.4923 (muy pequeño) y por lo tanto las variables tienen mucha
+#relación y el modelo AIC está optimizado
