@@ -1,0 +1,80 @@
+tasa.respiracion <- c(71,53,55,48,69,84,21,68,68)
+potasio <- c(388,258,292,205,449,331,114,580,622)
+zinc <- c(2414,10693,11682,12560,2464,2607,16205,2005,1825)
+estudio <- data.frame(tasa.respiracion,potasio,zinc)
+pairs(estudio)
+cov(estudio)
+regnull <- lm(tasa.respiracion~1, data = estudio)
+allreg <- lm(tasa.respiracion ~ . , data = estudio)
+step(regnull, scope = list(lower=regnull , upper=allreg), direction = "forward")
+
+
+########LIMITES PARA PREDECIR
+limestudio <- seq(min(estudio$zinc), max(estudio$zinc), length=9)
+limestudio <- data.frame(limestudio)
+limestudio
+limestud <- predict.lm(allreg, limestudio, interval = "prediction", se.fit = TRUE, data=estudio)
+head(limestud$fit) ## Te genera los lìmites
+#######PARA DIBUJAR LOS LIMITES:
+matplot(limestudio, limestud$fit, type = "l")
+####LE VAMOS A DAR VALORES A LAS VARIABLES INDEPENDIENTES PARA PREDECIR EL VALOR DE
+###LA DEPENDIENTE
+predict(allreg, data.frame(zinc=10000,potasio=40), interval = "predict")
+
+################CON EL DE RITMO CARDIACO
+peso <- c(74,92,63,58,78,85,85,73,62,80,72,74)
+altura <- c(168,196,170,175,162,169,190,186,176,170,176,179)
+ritmo <- c(62,75,60,71,66,62,79,74,70,66,71,69)
+edad <- c(25,31,29,64,44,41,37,35,34,29,19,50)
+ejemplo <- data.frame(peso,altura,ritmo,edad)
+pairs(ejemplo)
+cov(ejemplo)
+nulo <- lm(ritmo~1, data = ejemplo)
+completo <- lm(ritmo ~ . , data = ejemplo)
+step(nulo, scope = list(lower=nulo , upper=completo), direction = "forward")
+
+limestudio1 <- seq(min(ejemplo$peso), max(ejemplo$peso), length=12)
+limestudio2 <- seq(min(ejemplo$altura), max(ejemplo$altura), length=12)
+limestudio3 <- seq(min(ejemplo$edad), max(ejemplo$edad), length=12)
+limestudio <- data.frame(limestudio1,limestudio2, limestudio3)
+limestudio
+limestud <- predict.lm(completo, limejemplo, interval = "prediction", se.fit = TRUE, data=ejemplo
+head(limestud$fit)
+matplot(limejemplo, limejem$fit)                      
+                      
+cajas <- c(10,15,10,20,25,18,12,14,16,22,24,17,13,30,24)
+distancia <- c(30,25,40,18,22,31,26,34,29,37,20,25,27,23,33)
+tiempo <- c(24,27,29,31,25,33,26,28,31,39,33,30,25,42,40)
+estudio <- data.frame(cajas,distancia,tiempo)
+pairs(estudio)
+cor(estudio)
+
+regnull <- lm(tiempo~1, data = estudio)
+allreg <- lm(tiempo ~ . , data = estudio)
+
+step(regnull, scope = list(lower=regnull , upper=allreg), direction = "forward")
+
+mod1 <- lm(formula = tiempo ~ cajas + distancia, data = estudio)
+summary(mod1)
+shapiro.test(rstudent(mod1))
+require(lmtest)
+bptest(mod1)
+dwtest(mod1 , alternative = "two.sided")
+summary(mod1)
+
+######NO PASA NORMALIDAD
+######LOS OUTLIER
+install.packages("car")
+require(car)
+outliertest(allreg, cutoff=.05, n.max=5, order=T)
+influencePlot(allreg, id.n=5)
+help(car)
+
+cmod2 <- cooks.distance(allreg)
+##etique <- row.names(estudio)
+install.packages("faraway")
+require(faraway)
+halfnorm(cmod2, labs = etique, ylab = "dist. cook")
+cooks.distance()
+cmod2                      
+                      
